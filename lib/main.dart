@@ -9,7 +9,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  static const platform = const MethodChannel('leo/aware');
+  static const platform = const MethodChannel('ch/aware');
 
   @override
   void initState() {
@@ -22,13 +22,16 @@ class _MyAppState extends State<MyApp> {
   }
 
   void teste() async {
-    String res = await platform.invokeMethod('accelerometer');
-    print(res);
-    String res1 = await platform.invokeMethod('battery');
-    print('Bateria... ');
-    print(res1);
-    String res2 = await platform.invokeMethod('location');
+    //String res = await platform.invokeMethod('accelerometer');
+    //print(res);
+    //String res1 = await platform.invokeMethod('battery');
+    //print('Bateria... ');
+    //print(res1);
+    String res2 = await platform.invokeMethod('schedule');
     print(res2);
+    String res3 = await platform.invokeMethod('sync');
+    //String res3 = await platform.invokeMethod('application');
+    //print(res3);
   }
 
   @override
