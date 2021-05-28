@@ -75,6 +75,19 @@ class MainActivity: FlutterActivity() {
 
                 result.success(ret)
             }
+            if (call.method == "screen") {
+                var ret = ""
+                val applicationData: Cursor? = contentResolver.query(
+                    Applications_Provider.Applications_Foreground.CONTENT_URI, null, null, null, 
+                    Locations_Provider.Locations_Data.TIMESTAMP + " DESC LIMIT 1000")
+                if (applicationData != null && applicationData.getCount() > 0) {
+
+                    ret = DatabaseHelper.cursorToString(applicationData)
+                }
+                if (applicationData != null && !applicationData.isClosed()) applicationData.close()
+
+                result.success(ret)
+            }
             if (call.method == "schedule") {
                 var ret = ""
                 val scheduleData: Cursor? = contentResolver.query(
@@ -144,7 +157,7 @@ class MainActivity: FlutterActivity() {
 
                 contentResolver.insert(Aware_Provider.Aware_Studies.CONTENT_URI, studyData)
 
-                Aware.setSetting(applicationContext, Aware_Preferences.STATUS_ACCELEROMETER, true)
+                //Aware.setSetting(applicationContext, Aware_Preferences.STATUS_ACCELEROMETER, true)
 
                 resetLogs(applicationContext)
                 val aware = Intent(applicationContext, Aware::class.java)
