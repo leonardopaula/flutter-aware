@@ -1,8 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:aware/main.dart';
+import 'package:aware/util/Util.dart';
 import 'package:aware/screens/informationPageState.dart';
-
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -14,13 +13,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  void _incrementCounter() {
-    Navigator.pushNamed(context, MInformationPage.routeName).then((value) => setState(() {}));
+  void _enrollPage() {
+    Navigator.pushNamed(context, MInformationPage.routeName)
+        .then((value) => setState(() {}));
   }
 
   @override
   Widget build(BuildContext context) => FutureBuilder(
-        future: verifySharedPreferences(),
+        future: Util.verifySharedPreferences(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasData) {
@@ -33,7 +33,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     children: <Widget>[_buildTitleEntrarEstudo()],
                   ),
                   floatingActionButton: new FloatingActionButton.extended(
-                    onPressed: _incrementCounter,
+                    onPressed: _enrollPage,
                     tooltip: 'Entrar no Estudo',
                     label: const Text('Entrar no Estudo'),
                     icon: const Icon(Icons.thumb_up),
@@ -49,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     children: <Widget>[_buildTitleParticipandoEstudo()],
                   ),
                   floatingActionButton: new FloatingActionButton.extended(
-                    onPressed: _incrementCounter,
+                    onPressed: _enrollPage,
                     tooltip: 'Entrar no Estudo',
                     label: const Text('Entrar no Estudo'),
                     icon: const Icon(Icons.thumb_up),
@@ -65,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: <Widget>[_buildTitleEntrarEstudo()],
                 ),
                 floatingActionButton: new FloatingActionButton.extended(
-                  onPressed: _incrementCounter,
+                  onPressed: _enrollPage,
                   tooltip: 'Entrar no Estudo',
                   label: const Text('Entrar no Estudo'),
                   icon: const Icon(Icons.thumb_up),
@@ -78,10 +78,6 @@ class _MyHomePageState extends State<MyHomePage> {
           );
         },
       );
-
-  void _onButtonPressed() {
-    Navigator.pushNamed(context, MInformationPage.routeName);
-  }
 
   Widget _buildTitleParticipandoEstudo() {
     return Center(
