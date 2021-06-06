@@ -1,7 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:aware/main.dart';
-
+import 'package:aware/util/Util.dart';
 
 class MyStartForm extends StatefulWidget {
   @override
@@ -53,20 +52,7 @@ class MyStartFormState extends State<MyStartForm> {
           // When the user presses the button, show an alert dialog containing
           // the text that the user has entered into the text field.
           onPressed: () {
-            showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  // Retrieve the text the that user has entered by using the
-                  // TextEditingController.
-                  content: Text('Sucesso! Estudo iniciado \n\n' +
-                      emailController.text +
-                      '\n' +
-                      urlController.text),
-                );
-              },
-            );
-            saveDateSharedPreferences(emailController.text, urlController.text);
+            Util.enrollStudy(urlController.text, emailController.text);
           },
           tooltip: 'Show me the value!',
           label: const Text('Entrar'),
@@ -85,7 +71,7 @@ class MyStartFormState extends State<MyStartForm> {
                     content: Text('Estudo Finalizado'));
               },
             );
-            deleteSharedPreferences();
+            Util.deleteSharedPreferences();
           },
           label: const Text('Sair do Estudo'),
           icon: const Icon(Icons.exit_to_app),
