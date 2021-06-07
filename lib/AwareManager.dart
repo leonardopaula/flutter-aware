@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
@@ -45,7 +46,11 @@ class AwareManager {
     await channel.invokeMethod('putz');
   }
 
-  static Future<void> syncData(String url) async {
+  static Future<void> syncData(String url, context) async {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text('Enviando dados...'),
+    ));
+
     String res = await AwareManager().getData();
     final response = await http.post(
       Uri.parse('http://' + url + '/api/sensor'),
@@ -54,5 +59,21 @@ class AwareManager {
       },
       body: res,
     );
+
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: const Text('Sucesso!'),
+      ));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: const Text('Deu erro...'),
+        action: SnackBarAction(
+          label: 'Action',
+          onPressed: () {
+            // Code to execute.
+          },
+        ),
+      ));
+    }
   }
 }

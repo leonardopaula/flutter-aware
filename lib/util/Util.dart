@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import "../models/Study.dart";
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,7 +11,7 @@ import 'package:cron/cron.dart';
 class Util {
   static Cron cron = Cron();
 
-  static Future<Study> enrollStudy(String url, String mail) async {
+  static Future<Study> enrollStudy(String url, String mail, context) async {
     Study s;
     var uuid = Uuid().v5(Uuid.NAMESPACE_URL, url);
     final response = await http.post(
@@ -28,33 +29,31 @@ class Util {
       AwareManager.init(uuid);
       s = Study.fromJson(jsonDecode(response.body)["data"]);
       Util.saveDateSharedPreferences(mail, url, s, uuid);
-      Util.configureCronTab(s.sync, url);
+      Util.configureCronTab(s.sync, url, context);
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            // Retrieve the text the that user has entered by using the
+            // TextEditingController.
+            content: Text('Sucesso! Estudo iniciado \n\n' + mail + '\n' + url),
+          );
+        },
+      );
     }
 
     return s;
   }
 
-  static Future<void> configureCronTab(int seconds, String url) async {
+  static Future<void> configureCronTab(int seconds, String url, context) async {
     Util.cron.close();
     Util.cron = Cron()
       ..schedule(Schedule.parse('* */' + seconds.toString() + ' * * * *'), () {
-        AwareManager.syncData(url);
+        AwareManager.syncData(url, context);
       });
   }
 
-  static void sendData() async {
-    String res = await AwareManager().getData();
-
-    final response = await http.post(
-      Uri.parse('http://192.168.0.20:8000/api/sensors'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: res,
-    );
-  }
-
-  static Future<bool> verifySharedPreferences() async {
+  static Future<bool> verifySharedPreferences(context) async {
     final prefs = await SharedPreferences.getInstance();
     List<String> str = prefs.getStringList('userInfo');
 
@@ -62,7 +61,7 @@ class Util {
       if (null == str || str.isEmpty) {
         return true;
       } else {
-        Util.configureCronTab(int.parse(str[3]), str[1]);
+        Util.configureCronTab(int.parse(str[3]), str[1], context);
         AwareManager.init(str[4]);
         return false;
       }
