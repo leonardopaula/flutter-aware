@@ -35,7 +35,7 @@ class MainActivity: FlutterActivity() {
                 Aware.startBattery(applicationContext)
 
                 Aware.setSetting(applicationContext, Aware_Preferences.STATUS_LOCATION_GPS, true)
-                Aware.setSetting(applicationContext, Aware_Preferences.STATUS_LOCATION_NETWORK, true)
+                Aware.setSetting(applicationContext, Aware_Preferences.STATUS_LOCATION_NETWORK, false)
                 Aware.startLocations(applicationContext)
 
                 Aware.setSetting(applicationContext, Aware_Preferences.STATUS_LIGHT, true)

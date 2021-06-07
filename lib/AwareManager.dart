@@ -67,12 +67,6 @@ class AwareManager {
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: const Text('Deu erro...'),
-        action: SnackBarAction(
-          label: 'Action',
-          onPressed: () {
-            // Code to execute.
-          },
-        ),
       ));
     }
   }
