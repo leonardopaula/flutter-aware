@@ -49,7 +49,11 @@ class Util {
     Util.cron.close();
     Util.cron = Cron()
       ..schedule(Schedule.parse('* */' + seconds.toString() + ' * * * *'), () {
-        AwareManager.syncData(url, context);
+        try {
+          AwareManager.syncData(url, context);
+        } catch (_) {
+          print("oops");
+        }
       });
   }
 
