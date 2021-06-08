@@ -13,7 +13,7 @@ class Util {
 
   static Future<Study> enrollStudy(String url, String mail, context) async {
     Study s;
-    var uuid = Uuid().v5(Uuid.NAMESPACE_URL, url);
+    var uuid = Uuid().v4();
     final response = await http.post(
       Uri.parse('http://' + url + '/api/study'),
       headers: <String, String>{
